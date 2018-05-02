@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/ksator/junos-automation-with-ansible.svg?branch=master)](https://travis-ci.org/ksator/junos-automation-with-ansible)
 
 # Documentation Structure
 
@@ -8,11 +7,6 @@
 [**Requirements for Junos automation with Ansible**](README.md#requirements-for-junos-automation-with-ansible)  
 [**Requirements to use this repository**](README.md#requirements-to-use-this-repository)  
 [**Repository structure**](README.md#repository-structure)  
-[**Repository branches and network topology changes**](README.md#repository-branches-and-network-topology-changes)  
-[**Continuous integration with Travis CI**](README.md#continuous-integration-with-travis-ci)  
-[**Contributions, questions**](README.md#contributions-questions)    
-[**Looking for more examples on of how to use Ansible with Junos**](README.md#looking-for-more-examples-on-how-to-use-ansible-with-junos)  
-[**Looking for more Junos automation solutions**](README.md#looking-for-more-junos-automation-solutions)  
 
 
 # About this project   
@@ -185,63 +179,3 @@ more xxx/readme.md
 ansible-playbook xxx/pb*.yml  
 ```
 
-# Repository branches and network topology changes
-
-There are currently 2 branches in this repository: 
-- [**master**](https://github.com/ksator/junos-automation-with-ansible) - This is the default and active one. This is the one to use.  
-- [**topology_independent**](https://github.com/ksator/junos-automation-with-ansible/tree/topology_independent) - This branch allows to use a different network topology without changing the playbooks. The automation content in this branch is not up to date/in sync with the master branch, so, don’t use it, so you can skip this section.   
-
-Here's how the [**topology_independent**](https://github.com/ksator/junos-automation-with-ansible/tree/topology_independent) branch works: There is a [**topology.yml**](https://github.com/ksator/ansible-training-for-junos/blob/topology_independent/group_vars/all/topology.yml) file in [**group_vars/all**](https://github.com/ksator/junos-automation-with-ansible/tree/topology_independent/group_vars/all) directory. This yaml file defines the topology. Here's an example:  
-```
----
-topo:
-    ex4300-4:
-        port1: { name: ge-0/0/0,     peer: ex4300-9,     pport: port2 }
-        port2: { name: ge-0/0/1,     peer: ex4300-10,     pport: port2 }
-        
-    ex4300-9:
-        port1: { name: ge-0/0/0,     peer: ex4300-10,     pport: port1 }
-        port2: { name: ge-0/0/1,     peer: ex4300-4,     pport: port1 }
-        
-    ex4300-10:
-        port1: { name: ge-0/0/0,    peer: ex4300-9,       pport: port1 }
-        port2: { name: ge-0/0/1,    peer: ex4300-4,       pport: port2 }
-```
-This file is a dictionary with the key topo. The value of this key is the topology.  
-Because this file is located in the [**group_vars/all**](https://github.com/ksator/junos-automation-with-ansible/tree/topology_independent/group_vars/all) directory, the variable ```{{topo}}``` can be used for all devices. 
-
-The files in the **host_vars** directory were re-written: 
-- The files in the [**host_vars**](host_vars) directory in the [**master**](https://github.com/ksator/junos-automation-with-ansible) branch are static. So if you use another network topology, it doesn’t work anymore until you re-write these files. Example with this file (host_vars/ex4300-10/bgp.yml)  
-- The files in the [**host_vars**](https://github.com/ksator/junos-automation-with-ansible/tree/topology_independent/host_vars) directory in the [**topology_independent**](https://github.com/ksator/junos-automation-with-ansible/tree/topology_independent) branch use the ```{{topo}}``` variable. So if we change the topology, we just need to update the file [**topology.yml**](https://github.com/ksator/ansible-training-for-junos/blob/topology_independent/group_vars/all/topology.yml), and there is no need to change the content of the files in the [**host_vars**](https://github.com/ksator/junos-automation-with-ansible/tree/topology_independent/host_vars) directory nor the playbooks.  
-
-# Continuous integration with Travis CI
-
-There is a github webhook with [**Travis CI**](https://travis-ci.org/ksator/junos-automation-with-ansible)  
-The playbooks in this repository are tested automatically by Travis CI.  
-The files [**.travis.yml**](.travis.yml) and [**requirements.txt**](requirements.txt) at the root of this repository are used for this.  
-
-We are using two types of playbooks in this repository:  
-- Some playbooks do not interact with Junos:   
-   - Travis CI is executing them.  
-- Some playbooks interact with Junos
-  - ansible-playbook has a built-in option to check only the playbook's syntax (using the flag ```--syntax-check```). This is how Travis is testing them. If there is any syntax error, Travis will fail the build and output the errors in the log.  
-    
-Here's the last build status [![Build Status](https://travis-ci.org/ksator/junos-automation-with-ansible.svg?branch=master)](https://travis-ci.org/ksator/junos-automation-with-ansible)
-
-# Contributions, questions
-Please submit github [**issues**](https://github.com/ksator/junos-automation-with-ansible/wiki) or **pull requests**  
-
-# Looking for more examples on how to use Ansible with Junos 
-
-For more examples, you can visit these repositories:   
-https://github.com/JNPRAutomate/juniper_junos_ansible_modules_examples  
-https://github.com/JNPRAutomate/ansible-junos-examples  
-https://github.com/dgjnpr/ansible-template-for-junos  
-https://github.com/JNPRAutomate/ansible-junos-evpn-vxlan    
-https://github.com/JNPRAutomate/ansible-demo-ip-fabric   
-
-# Looking for more Junos automation solutions  
-
-https://github.com/ksator?tab=repositories  
-https://gitlab.com/users/ksator/projects  
-https://gist.github.com/ksator/  
