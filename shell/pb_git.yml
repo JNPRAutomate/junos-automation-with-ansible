@@ -17,11 +17,11 @@
    tasks:
    - shell: git add .
    - shell: git commit -m {{ comment }}
-   - shell: git push origin update
+   - shell: git push origin master
 # you can use the module command instead of shell if you prefer
-#  - command: git add .
-#  - command: git commit -m {{ comment }}
-#  - command: git push origin update
+#   - command: git add .
+#   - command: git commit -m {{ comment }}
+#   - command: git push origin master
 
    
 

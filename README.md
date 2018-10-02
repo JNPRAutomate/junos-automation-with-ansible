@@ -1,4 +1,3 @@
-
 # Documentation Structure
 
 [**About this project**](README.md#about-this-project)  
@@ -178,4 +177,3 @@ ls xxx/
 more xxx/readme.md
 ansible-playbook xxx/pb*.yml  
 ```
-
